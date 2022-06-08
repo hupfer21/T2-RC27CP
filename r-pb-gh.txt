@@ -1,0 +1,122 @@
+Current configuration : 2163 bytes
+!
+version 15.1
+no service timestamps log datetime msec
+no service timestamps debug datetime msec
+service password-encryption
+security passwords min-length 10
+!
+hostname r-pb-gh
+!
+login block-for 120 attempts 3 within 60
+!
+!
+enable secret 5 $1$mERr$PiRsyqUz.SGcqMcd9cx541
+!
+!
+!
+!
+!
+!
+no ip cef
+ipv6 unicast-routing
+!
+no ipv6 cef
+!
+!
+!
+username gustavo secret 5 $1$mERr$F5V/u2120qbEqnDJcxLe00
+!
+!
+license udi pid CISCO2811/K9 sn FTX1017O6W9-
+!
+!
+!
+!
+!
+!
+!
+!
+!
+ip domain-name gustavo.hupfer.com.br
+!
+!
+spanning-tree mode pvst
+!
+!
+!
+!
+!
+!
+interface FastEthernet0/0
+ ip address 200.200.65.1 255.255.255.192
+ duplex auto
+ speed auto
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:DB8:ACAD:4100::1/64
+!
+interface FastEthernet0/1
+ no ip address
+ duplex auto
+ speed auto
+ shutdown
+!
+interface Serial0/0/0
+ ip address 200.200.65.225 255.255.255.252
+ ipv6 address 2001:DB8:ACAD:41FF::1/112
+ clock rate 56000
+!
+interface Serial0/0/1
+ ip address 200.200.65.238 255.255.255.252
+ ipv6 address 2001:DB8:ACAD:41FF::3:2/112
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+ip classless
+ip route 200.200.65.64 255.255.255.224 200.200.65.226 
+ip route 200.200.65.228 255.255.255.252 200.200.65.226 
+ip route 200.200.65.232 255.255.255.252 200.200.65.226 
+ip route 200.200.65.240 255.255.255.252 200.200.65.226 
+ip route 200.200.65.96 255.255.255.224 200.200.65.226 
+!
+ip flow-export version 9
+!
+ipv6 route 2001:DB8:ACAD:4101::/64 2001:DB8:ACAD:41FF::2
+ipv6 route 2001:DB8:ACAD:4102::/64 2001:DB8:ACAD:41FF::2
+ipv6 route 2001:DB8:ACAD:41FF::1:0/112 2001:DB8:ACAD:41FF::2
+ipv6 route 2001:DB8:ACAD:41FF::2:0/112 2001:DB8:ACAD:41FF::2
+ipv6 route 2001:DB8:ACAD:41FF::4:0/112 2001:DB8:ACAD:41FF::2
+!
+ip access-list extended sl_def_acl
+ deny tcp any any eq telnet
+ deny tcp any any eq www
+ deny tcp any any eq 22
+ permit tcp any any eq 22
+!
+banner motd ^CRoteador Pato Branco
+ATENO Acesso restrito a pessoas autorizadas!
+Administrador: Gustavo Hupfer Martins gut0ohupfer@gmail.com^C
+!
+!
+!
+!
+!
+line con 0
+ password 7 08014F41070A4810071818053C24
+ login
+!
+line aux 0
+!
+line vty 0 4
+ exec-timeout 5 0
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!
+!
+!
+end
